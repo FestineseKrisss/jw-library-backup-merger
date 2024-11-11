@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Consuntivi MedITech</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  
+  <!-- Favicons -->
+  <link href="{{url_for('static', filename='img/favicon.png')}}" rel="icon">
+  
+  <link href="{{url_for('static', filename='img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  
+  <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  
+  <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.snow.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/simple-datatables/style.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+  
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{{url_for('index')}}" class="logo d-flex align-items-center w-50">
+        <img src="{{url_for('static', filename='img/logoMedITech.png')}}" alt="">
+      </a>
+    </div><!-- End Logo -->
+    
+    
+    
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="pe-3 float-start">
+          <span class="w-100 mx-2 d-none d-md-block">Compilazione preventivo</span>
+        </li>
+        <li class="pe-3">
+          <span class="d-none d-md-block ps-2" style="font-weight: bold;">{{nomeUtente}}</span>
+          
+        </li>
+        <li>
+          <a href="/consuntivApp/logout" class="h4 px-1 text-center divMicrosoft shadow mx-3" style="color: rgb(33,37,41); border: 3px solid rgb(155, 155, 155); border-radius:5px; width: 6rem; font-weight: 550">Logout</a>
+
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <script>
+    function disabilita(){
+      const collection = document.getElementsByName("aggiungi_prestazione");
+      for (let i = 0; i < collection.length; i++) {
+        collection[i].disabled = true;
+      }
+      const collection1 = document.getElementsByName("modifica_prestazione");
+      for (let i = 0; i < collection1.length; i++) {
+        collection1[i].disabled = true;
+      }
+      const collection2 = document.getElementsByName("elimina_prestazione");
+      for (let i = 0; i < collection2.length; i++) {
+        collection2[i].disabled = true;
+      }
+      const collection3 = document.getElementsByName("aggiungi_prestazione_non_pianificata");
+      for (let i = 0; i < collection3.length; i++) {
+        collection3[i].disabled = true;
+      }
+    }
+  </script>
+  
+
+  <main id="main" class="main">
+
+
+      <div>
+      {% for i in lista_giorni %}
+        {% if i[3] == 0 %}
+          <h5 id="{{i[0]}} {{i[1]}} {{i[2]}}">{{i[0]}} {{i[1]}} {{i[2]}}</h5>
+          <form method="post">
+            <div class="row mb-3">
+              <div class="col-sm-10">
+                <table class="table table-bordered" id="tabella{{i[8][0][2]}}">
+                  <thead>
+                    <tr>
+                      <th scope="col">Commessa</th>
+                      <th scope="col">Descrizione commessa</th>
+                      <th scope="col">Ore</th>
+                      <th scope="col">Azioni</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="width: 20rem;">
+                        <select class="form-select" name="opzioneSelect" id="opzioneSelect{{i[8][0][2]}}" disabled required>
+                        <option value="">Seleziona il tipo di commmessa</option>
+                        {% for x in i[12] %}
+                          <option value="{{x}}">{{x}}</option>
+                        {% endfor %}
+                        </select>
+                      </td>
+                      <td style="width: 30rem;"><input type="text" name="descrizione" id="descrizione{{i[8][0][2]}}" class="form-control" disabled required></td>
+                      <td style="width: 10rem;">
+                        <select class="form-select" name="ore" id="ore{{i[8][0][2]}}" disabled required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        </select>
+                      </td>
+                      <td style="width: 15rem;">
+                        <button type="button" name="modifica_prestazione" id="modifica_prestazione{{i[8][0][2]}}" style="border: 0px; background-color:white" onclick="modificaPrestazioneZero({{i[8][0][2]}})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifica"><i class="bi bi-pencil-square" style="color: green; font-size: 1.5rem"></i></button>
+                        <button type="button" name="aggiungi_prestazione_non_pianificata" id="aggiungi_prestazione_non_pianificata{{i[8][0][2]}}" onclick="nonPianificatoZero({{i[8][0][0]}}, {{i[8][0][1]}}, {{i[8][0][2]}}, {{i[13]}})" style="border: 0px; background-color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Non pianificato"><i class="ri ri-add-circle-fill" style="color: rgb(190, 0, 0); font-size: 1.5rem"></i></button>
+                        
+                        <button type="submit" name="salva_modifiche0" id="salva_modifiche{{i[8][0][2]}}" value="{{i[8][0][0]}}-{{i[8][0][1]}}-{{i[8][0][2]}}" style="border: 0px; background-color:white; display: none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button>
+                        <button type="submit" name="elimina_modifiche" id="elimina_modifiche{{i[8][0][2]}}" onclick="window.location.reload()" style="border: 0px; background-color:white; display:none"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"></i></button>
+                  
+                        <script>
+                          function modificaPrestazioneZero(valore){
+                            if (valore.toString().length == 1){
+                              valore = "0"+valore
+                            }
+                            nonPianificato = document.getElementById("aggiungi_prestazione_non_pianificata"+valore);
+                            modificaPrestazione = document.getElementById("modifica_prestazione"+valore);
+
+                            salvaModifiche = document.getElementById("salva_modifiche"+valore);
+                            eliminaModifiche = document.getElementById("elimina_modifiche"+valore);
+                           
+                            const collection = document.getElementsByName("modifica_prestazione");
+                            for (let i = 0; i < collection.length; i++) {
+                              collection[i].disabled = true;
+                            }
+
+                            salvaModifiche.style.display = "inline-block";
+                            eliminaModifiche.style.display = "inline-block";
+  
+                            nonPianificato.style.display = "none";
+                            modificaPrestazione.style.display = "none";
+
+                            opzioneSelect = document.getElementById("opzioneSelect"+valore);
+                            descrizione = document.getElementById("descrizione"+valore);
+                            ore = document.getElementById("ore"+valore);
+
+                            opzioneSelect.disabled = false;
+                            descrizione.disabled = false;
+                            ore.disabled = false;
+
+                            disabilita()
+                          }
+
+                          function nonPianificatoZero(anno, mese, giorno, commesse){
+                            if (giorno.toString().length == 1){
+                              giorno = "0"+giorno
+                            }
+                            nonPianificato = document.getElementById("aggiungi_prestazione_non_pianificata"+giorno);
+                            modificaPrestazione = document.getElementById("modifica_prestazione"+giorno);
+
+                            salvaModifiche = document.getElementById("salva_modifiche"+giorno);
+                            eliminaModifiche = document.getElementById("elimina_modifiche"+giorno);
+                           
+                            const collection = document.getElementsByName("modifica_prestazione");
+                            for (let i = 0; i < collection.length; i++) {
+                              collection[i].disabled = true;
+                            }
+
+                            salvaModifiche.style.display = "inline-block";
+                            eliminaModifiche.style.display = "inline-block";
+  
+                            nonPianificato.style.display = "none";
+                            modificaPrestazione.style.display = "none";
+
+                            opzioneSelect = document.getElementById("opzioneSelect"+giorno);
+                            descrizione = document.getElementById("descrizione"+giorno);
+                            ore = document.getElementById("ore"+giorno);
+
+                            opzioneSelect.disabled = false;
+                            descrizione.disabled = false;
+                            ore.disabled = false;
+
+                            disabilita();
+
+                            opzioneSelect = document.getElementById("opzioneSelect"+giorno)
+                            opzioneSelect.innerHTML= ""
+                            select = commesse
+
+                            stringa_select = '<select class="form-select" name="opzioneSelect" id="opzioneSelect'+giorno+'" required><option>Seleziona il tipo di commessa</option>';
+                            for(y=0;y<select.length;y++){
+                                stringa_select+='<option value="'+select[y]+'">'+select[y]+'</option>';
+                            }
+                            stringa_select+='</select>';
+                            
+                            opzioneSelect.innerHTML = stringa_select
+                          }
+                            
+                            
+                            
+                          
+
+                          
+                          </script>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+
+        {%elif i[3] == 1 %}
+          <div class="row">
+            <div class="col-3">
+              <h5 id="{{i[0]}} {{i[1]}} {{i[2]}}">{{i[0]}} {{i[1]}} {{i[2]}}</h5>
+            </div>
+            <div class="col-2 mx-0">
+              {% if i[9] < 8 %}
+                <div class="progress" style="height: 25px;">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: {{i[10]}}%" aria-valuenow="i{{i[10]}}" aria-valuemin="0" aria-valuemax="100">{{i[9]}}/8</div>
+                </div> 
+              {% else %}
+                <div class="progress" style="height: 25px;">
+                  <div class="progress-bar" role="progressbar" style="width: {{i[10]}}%" aria-valuenow="i{{i[10]}}" aria-valuemin="0" aria-valuemax="100">{{i[9]}}/8</div>
+                </div> 
+              {% endif %}
+            </div>
+          </div>
+        
+        
+          <form method="post">
+            <div class="row mb-3">
+              <div class="col-sm-10">
+                <table class="table table-bordered" id="corpoTabella{{i[7]}}">
+                  <thead>
+                    <tr>
+                      <th scope="col">Commessa</th>
+                      <th scope="col">Descrizione commessa</th>
+                      <th scope="col">Ore</th>
+                      <th scope="col">Azioni</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="width: 20rem;">
+                        <select class="form-select" name="opzioneSelect" id="opzioneSelect{{i[7]}}" disabled required>
+                        <option>{{i[4][0]}}</option>
+                        {% for x in i[12] %}
+                          <option value="{{x}}">{{x}}</option>
+                        {% endfor %}
+                        </select>
+                      </td>
+                      
+                      <td style="width: 30rem;"><input type="text" class="form-control" name="descrizione" id="descrizione{{i[7]}}" value="{{i[5][0]}}" disabled required></td>
+                      <td style="width: 10rem;">
+                        <select class="form-select" name="ore" id="ore{{i[7]}}" disabled required>
+                        <option selected>{{i[6][0]}}</option>
+                        {% for x in range(1, 9) %}
+                          <option value="{{x}}">{{x}}</option>
+                        {%endfor%}
+                        </select>
+                      </td>
+                      <td style="width: 15rem;">
+                        <button type="button" name="aggiungi_prestazione" id="aggiungi_prestazione{{i[7]}}" style="border: 0px; background-color:white" onclick="aggiungiPrestazioneSingolo({{i[7]}}, {{i[8][0][0]}}, {{i[8][0][1]}}, {{i[8][0][2]}}, {{i[9]}})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Aggiungi prestazione"><i class="ri ri-add-circle-fill" style="color: blue; font-size: 1.5rem"></i></button>
+                        <button type="button" name="aggiungi_prestazione_non_pianificata" id="aggiungi_prestazione_non_pianificata{{i[7]}}" onclick="aggiungiPrestazioneNonPianficataSingolo({{i[7]}}, {{i[8][0][0]}}, {{i[8][0][1]}}, {{i[8][0][2]}}, {{i[11][0]}}, {{i[13]}})" style="border: 0px; background-color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Non pianificato"><i class="ri ri-add-circle-fill" style="color: rgb(190, 0, 0); font-size: 1.5rem"></i></button>
+                        <button type="button" name="modifica_prestazione" id="modifica_prestazione{{i[7]}}" value="{{i[7]}}" style="border: 0px; background-color:white" onclick="modificaPrestazioneSingolo({{i[7]}})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifica"><i class="bi bi-pencil-square" style="color: green; font-size: 1.5rem"></i></button>
+                        <button type="button" name="elimina_prestazione" id="elimina_prestazione{{i[7]}}" style="border: 0px; background-color:white" disabled><i class="bi bi-trash-fill" style="color: rgb(168, 36, 36); font-size: 1.5rem"></i></button>
+  
+                        <button type="submit" name="salva_modifiche" id="salva_modifiche{{i[7]}}" value="{{i[7]}}" style="border: 0px; background-color:white; display: none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button>
+                        <button type="submit" name="elimina_modifiche" id="elimina_modifiche{{i[7]}}" onclick="window.location.reload()" style="border: 0px; background-color:white; display:none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;"></i></button>
+                      
+                        <script>
+                          
+                          function modificaPrestazioneSingolo(valore, numero_max){
+                            stringa = "bottone["+valore+"]";
+                            aggiungiPrestazione = document.getElementById("aggiungi_prestazione["+valore+"]");
+                            aggiungiPrestazioneNonPianificata = document.getElementById("aggiungi_prestazione_non_pianificata["+valore+"]");
+                            modificaPrestazione = document.getElementById("modifica_prestazione["+valore+"]");
+                            eliminaPrestazione = document.getElementById("elimina_prestazione["+valore+"]");
+                            salvaModifiche = document.getElementById("salva_modifiche["+valore+"]");
+                            eliminaModifiche = document.getElementById("elimina_modifiche["+valore+"]");
+  
+                            const collection = document.getElementsByName("modifica_prestazione");
+                            for (let i = 0; i < collection.length; i++) {
+                              collection[i].disabled = true;
+                            }
+
+                            salvaModifiche.style.display = "inline-block";
+                            eliminaModifiche.style.display = "inline-block";
+  
+                            aggiungiPrestazione.style.display = "none";
+                            aggiungiPrestazioneNonPianificata.style.display = "none";
+                            modificaPrestazione.style.display = "none";
+                            eliminaPrestazione.style.display = "none"; 
+
+                            opzioneSelect = document.getElementById("opzioneSelect["+valore+"]");
+                            descrizione = document.getElementById("descrizione["+valore+"]");
+                            ore = document.getElementById("ore["+valore+"]");
+
+                            opzioneSelect.disabled = false;
+                            descrizione.disabled = false;
+                            ore.disabled = false;
+
+                            disabilita()
+                          }
+
+
+                          function aggiungiPrestazioneSingolo(id, anno, mese, giorno, numero_max){
+                            giorno = giorno.toString()
+                            mese = mese.toString()
+                            if(giorno.length==1){
+                              giorno = "0"+giorno
+                            }
+                            if(mese.length==1){
+                              mese = "0"+mese
+                            }
+
+                            vettoreData = [anno, mese, giorno]
+                            data = "";
+                            for (var x = 0; x<vettoreData.length; x++){
+                              data = data+vettoreData[x]
+                              if (x!=2){
+                                data = data+"-"
+                              }
+                            }
+
+                            tbody = document.getElementById("corpoTabella["+id+"]");
+                            
+                            row = tbody.insertRow();
+
+                            c1 = row.insertCell();
+                            c2 = row.insertCell();
+                            c3 = row.insertCell();
+                            c4 = row.insertCell();
+                            
+                            stringa_select = '<select class="form-select" name="opzioneSelect" id="opzioneSelect0" required><option value="">Seleziona il tipo di commessa</option>';
+                            select = document.getElementById("opzioneSelect["+id+"]").options
+                            for(y=1;y<select.length;y++){
+                              stringa_select+='<option value="'+select[y].value+'">'+select[y].value+'</option>';
+                            }
+                            stringa_select+='</select>';
+
+
+                            numero_max = 8-numero_max+1
+                            stringa_max_ore = '<td style="width: 20rem;"><select class="form-select" name="ore" id="ore{{i[7]}}" required>';
+                            for(x = 1; x<numero_max; x++){
+                              stringa_max_ore+='<option value='+x+'>'+x+'</option>';
+                            }
+                            stringa_max_ore += '</select></td>';
+
+                            c1.innerHTML = stringa_select
+                            c2.innerHTML = '<input type="text" class="form-control" name="descrizione" id="descrizione0" required placeholder="Inserisci la descrizione della commessa...">';
+                            c3.innerHTML = stringa_max_ore
+                            c4.innerHTML = '<button type="submit" name="conferma_aggiungi" id="conferma_aggiungi0" required value='+data+' style="border: 0px; background-color:white;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button><button type="submit" name="elimina_modifiche" id="elimina_modifiche0" onclick="window.location.reload()" style="border: 0px; background-color:white; " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;"></i></button>';
+
+                            disabilita();
+                          }
+                          
+
+                          function aggiungiPrestazioneNonPianficataSingolo(id, anno, mese, giorno, numero_max, commesse){
+                            giorno = giorno.toString()
+                            mese = mese.toString()
+                            if(giorno.length==1){
+                              giorno = "0"+giorno
+                            }
+                            if(mese.length==1){
+                              mese = "0"+mese
+                            }
+
+                            vettoreData = [anno, mese, giorno]
+                            data = "";
+                            for (var x = 0; x<vettoreData.length; x++){
+                              data = data+vettoreData[x]
+                              if (x!=2){
+                                data = data+"-"
+                              }
+                            }
+
+                            
+
+
+                            tbody = document.getElementById("corpoTabella["+id+"]");
+                            
+                            row = tbody.insertRow();
+
+                            c1 = row.insertCell();
+                            c2 = row.insertCell();
+                            c3 = row.insertCell();
+                            c4 = row.insertCell();
+                            
+                            stringa_select = '<select class="form-select" name="opzioneSelect" id="opzioneSelect0" required><option value="">Seleziona il tipo di commessa</option>';
+                            select = commesse
+                            for(y=0;y<select.length;y++){
+                              stringa_select+='<option value="'+select[y]+'">'+select[y]+'</option>';
+                            }
+                            stringa_select+='</select>';
+
+
+
+                            stringa_max_ore = '<td style="width: 20rem;"><select class="form-select" name="ore" id="ore{{i[7]}}" required>';
+                            for(x = 1; x<numero_max; x++){
+                              stringa_max_ore+='<option value='+x+'>'+x+'</option>';
+                            }
+                            stringa_max_ore += '</select></td>';
+
+                            c1.innerHTML = stringa_select
+                            c2.innerHTML = '<input type="text" class="form-control" name="descrizione" id="descrizione0" required placeholder="Inserisci la descrizione della commessa...">';
+                            c3.innerHTML = stringa_max_ore
+                            c4.innerHTML = '<button type="submit" name="conferma_aggiungi" id="conferma_aggiungi0" required value='+data+' style="border: 0px; background-color:white;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button><button type="submit" name="elimina_modifiche" id="elimina_modifiche0" onclick="window.location.reload()" style="border: 0px; background-color:white; " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;"></i></button>';
+
+                            disabilita();
+                          }
+                          
+                        </script>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+          
+
+        {%elif i[3] > 1 %}
+          <div class="row">
+            <div class="col-3">
+              <h5 id="{{i[0]}} {{i[1]}} {{i[2]}}">{{i[0]}} {{i[1]}} {{i[2]}}</h5>
+            </div>
+            <div class="col-2 mx-0">
+              {% if i[9] < 8 %}
+                <div class="progress" style="height: 25px;">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: {{i[10]}}%" aria-valuenow="i{{i[10]}}" aria-valuemin="0" aria-valuemax="100">{{i[9]}}/8</div>
+                </div> 
+              {% else %}
+                <div class="progress" style="height: 25px;">
+                  <div class="progress-bar" role="progressbar" style="width: {{i[10]}}%" aria-valuenow="i{{i[10]}}" aria-valuemin="0" aria-valuemax="100">{{i[9]}}/8</div>
+                </div> 
+              {% endif %}
+
+            </div>
+          </div>
+          
+          <form method="post">
+            <div class="row mb-3">
+              <div class="col-sm-10">
+                <table class="table table-bordered" id="corpoTabella{{i[7]}}">
+                  <thead>
+                    <tr>
+                      <th scope="col">Commessa</th>
+                      <th scope="col">Descrizione commessa</th>
+                      <th scope="col">Ore</th>
+                      <th scope="col">Azioni</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for j in i[4] %}
+                      <tr  id="prova">
+                        <td style="width: 20rem;">
+                          <select class="form-select" name="opzioneSelect" id="opzioneSelect{{i[7][loop.index-1]}}" disabled required>
+                          <option selected>{{i[4][loop.index-1]}}</option>
+                          {% for x in i[12][loop.index-1] %}
+                            <option value="{{x[0]}}">{{x[0]}}</option>
+                          {% endfor %}
+                          </select>
+                        </td>
+  
+                        <td style="width: 30rem;">
+                          <input type="text" class="form-control" name="descrizione" value="{{i[5][loop.index-1]}}" id="descrizione{{i[7][loop.index-1]}}" disabled required>
+                        </td>
+                        <td style="width: 10rem;">
+                          
+                          <select class="form-select" name="ore" id="ore{{i[7][loop.index-1]}}" disabled required>
+                          <option selected>{{i[6][loop.index-1]}}</option>
+                          {% for x in range(1, i[11][loop.index-1]) %}
+                            <option value="{{x}}">{{x}}</option>
+                          {%endfor%}
+                          </select>
+                        </td>
+
+  
+                        <td style="width: 15rem;">
+                          <button type="button" name="aggiungi_prestazione" id="aggiungi_prestazione{{i[7][loop.index-1]}}" style="border: 0px; background-color:white" onclick="aggiungiPrestazioneMultiplo({{i[7]}}, {{i[8][loop.index-1][0]}}, {{i[8][loop.index-1][1]}}, {{i[8][loop.index-1][2]}}, {{i[9]}})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Aggiungi prestazione"><i class="ri ri-add-circle-fill" style="color: blue; font-size: 1.5rem" ></i></button>
+                          <button type="button" name="aggiungi_prestazione_non_pianificata" id="aggiungi_prestazione_non_pianificata{{i[7][loop.index-1]}}" onclick="aggiungiPrestazioneNonPianficataMultiplo({{i[7]}}, {{i[8][loop.index-1][0]}}, {{i[8][loop.index-1][1]}}, {{i[8][loop.index-1][2]}}, {{i[9]}}, {{i[13]}})" style="border: 0px; background-color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Non pianificato"><i class="ri ri-add-circle-fill" style="color: rgb(190, 0, 0); font-size: 1.5rem"></i></button>
+                          <button type="button" name="modifica_prestazione" id="modifica_prestazione{{i[7][loop.index-1]}}" value="{{i[7][loop.index-1]}}" style="border: 0px; background-color:white" onclick="modificaPrestazioneMultiplo({{i[7][loop.index-1]}})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifica"><i class="bi bi-pencil-square" style="color: green; font-size: 1.5rem"></i></button>
+                          <button type="submit" name="elimina_prestazione" id="elimina_prestazione{{i[7][loop.index-1]}}" value="{{i[7][loop.index-1]}}" style="border: 0px; background-color:white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elimina"><i class="bi bi-trash-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem"></i></button>
+  
+                          <button type="submit" name="salva_modifiche" id="salva_modifiche{{i[7][loop.index-1]}}" value="{{i[7][loop.index-1]}}" style="border: 0px; background-color:white; display: none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button>
+                          <button type="submit" name="elimina_modifiche" id="elimina_modifiche{{i[7][loop.index-1]}}" onclick="window.location.reload()" style="border: 0px; background-color:white; display:none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;"></i></button>                      
+                        
+                        
+                        </td>
+
+                        <script>
+                          
+                          function modificaPrestazioneMultiplo(valore){
+                            stringa = "bottone["+valore+"]";
+                            aggiungiPrestazione = document.getElementById("aggiungi_prestazione"+valore);
+                            aggiungiPrestazioneNonPianificata = document.getElementById("aggiungi_prestazione_non_pianificata"+valore);
+                            modificaPrestazione = document.getElementById("modifica_prestazione"+valore);
+                            eliminaPrestazione = document.getElementById("elimina_prestazione"+valore);
+                            salvaModifiche = document.getElementById("salva_modifiche"+valore);
+                            eliminaModifiche = document.getElementById("elimina_modifiche"+valore);
+                            
+                            const collection = document.getElementsByName("modifica_prestazione");
+                            for (let i = 0; i < collection.length; i++) {
+                              collection[i].disabled = true;
+                            }
+
+                            salvaModifiche.style.display = "inline-block";
+                            eliminaModifiche.style.display = "inline-block";
+  
+                            aggiungiPrestazione.style.display = "none";
+                            aggiungiPrestazioneNonPianificata.style.display = "none";
+                            modificaPrestazione.style.display = "none";
+                            eliminaPrestazione.style.display = "none"; 
+
+                            opzioneSelect = document.getElementById("opzioneSelect"+valore);
+                            descrizione = document.getElementById("descrizione"+valore);
+                            ore = document.getElementById("ore"+valore);
+
+                            opzioneSelect.disabled = false;
+                            descrizione.disabled = false;
+                            ore.disabled = false;
+
+                            disabilita()
+                          }
+
+                          function aggiungiPrestazioneNonPianficataMultiplo(id, anno, mese, giorno, numero_max, commesse){
+                            giorno = giorno.toString()
+                            mese = mese.toString()
+                            if(giorno.length==1){
+                              giorno = "0"+giorno
+                            }
+                            if(mese.length==1){
+                              mese = "0"+mese
+                            }
+
+                            vettoreData = [anno, mese, giorno]
+                            data = "";
+                            for (var x = 0; x<vettoreData.length; x++){
+                              data = data+vettoreData[x]
+                              if (x!=2){
+                                data = data+"-"
+                              }
+                            }
+
+                            stringa="corpoTabella["
+                            for (var y = 0; y<id.length; y++){
+                              if (y==id.length-1){
+                                stringa = stringa+id[y]
+                              } else{
+                                stringa = stringa+id[y]+", "
+                              }
+                            }
+                            stringa = stringa+"]"
+
+                            tbody = document.getElementById(stringa);
+                            row = tbody.insertRow();
+
+                            c1 = row.insertCell();
+                            c2 = row.insertCell();
+                            c3 = row.insertCell();
+                            c4 = row.insertCell();
+                            
+                            stringa_select = '<select class="form-select" name="opzioneSelect" required id="opzioneSelect0"><option value="">Seleziona il tipo di commessa</option>';
+                            select = commesse
+                            for(y=0;y<select.length;y++){
+                              stringa_select+='<option value="'+select[y]+'">'+select[y]+'</option>';
+                            }
+                            stringa_select+='</select>';
+
+                            numero_max = 8-numero_max+1
+                            stringa_max_ore = '<td style="width: 20rem;"><select class="form-select" name="ore" id="ore0" required>';
+                            if(numero_max!=8){
+                              for (x=1; x<numero_max; x++){
+                                stringa_max_ore+='<option value'+x+'>'+x+'</option>';
+                              }
+                            }
+                            stringa_max_ore+='</select></td>';
+
+                            c1.innerHTML = stringa_select
+                            c2.innerHTML = '<input type="text" class="form-control" name="descrizione" id="descrizione0" required placeholder="Inserisci la descrizione della commessa...">';
+                            c3.innerHTML = stringa_max_ore;
+                            c4.innerHTML = '<button type="submit" name="conferma_aggiungi" id="conferma_aggiungi0" required value='+data+' style="border: 0px; background-color:white;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button><button type="submit" name="elimina_modifiche" id="elimina_modifiche0" onclick="window.location.reload()" style="border: 0px; background-color:white; " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;"></i></button>';
+
+                            disabilita();
+                          }
+
+                          function aggiungiPrestazioneMultiplo(id, anno, mese, giorno, numero_max){
+                            giorno = giorno.toString()
+                            mese = mese.toString()
+                            if(giorno.length==1){
+                              giorno = "0"+giorno
+                            }
+                            if(mese.length==1){
+                              mese = "0"+mese
+                            }
+
+                            vettoreData = [anno, mese, giorno]
+                            data = "";
+                            for (var x = 0; x<vettoreData.length; x++){
+                              data = data+vettoreData[x]
+                              if (x!=2){
+                                data = data+"-"
+                              }
+                            }
+
+                            stringa="corpoTabella["
+                            for (var y = 0; y<id.length; y++){
+                              if (y==id.length-1){
+                                stringa = stringa+id[y]
+                              } else{
+                                stringa = stringa+id[y]+", "
+                              }
+                            }
+                            stringa = stringa+"]"
+
+                            tbody = document.getElementById(stringa);
+                            row = tbody.insertRow();
+
+                            c1 = row.insertCell();
+                            c2 = row.insertCell();
+                            c3 = row.insertCell();
+                            c4 = row.insertCell();
+                            
+                            stringa_select = '<select class="form-select" name="opzioneSelect" id="opzioneSelect0" required><option value="">Seleziona il tipo di commessa</option>';
+                            select = document.getElementById("opzioneSelect"+id[0]+"").options
+                            for(y=1;y<select.length;y++){
+                              stringa_select+='<option value="'+select[y].value+'">'+select[y].value+'</option>';
+                            }
+                            stringa_select+='</select>';
+
+                            numero_max = 8-numero_max+1
+                            stringa_max_ore = '<td style="width: 20rem;"><select class="form-select" name="ore" id="ore0" required>';
+                            if(numero_max!=8){
+                              for (x=1; x<numero_max; x++){
+                                stringa_max_ore+='<option value'+x+'>'+x+'</option>';
+                              }
+                            }
+                            stringa_max_ore+='</select></td>';
+
+                            c1.innerHTML = stringa_select
+                            c2.innerHTML = '<input type="text" class="form-control" name="descrizione" id="descrizione0" required placeholder="Inserisci la descrizione della commessa...">';
+                            c3.innerHTML = stringa_max_ore;
+                            c4.innerHTML = '<button type="submit" name="conferma_aggiungi" id="conferma_aggiungi0" required value='+data+' style="border: 0px; background-color:white;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Conferma"><i class="bi bi-check-circle-fill" style="color: green; font-size: 1.5rem;"></i></button><button type="submit" name="elimina_modifiche" id="elimina_modifiche0" onclick="window.location.reload()" style="border: 0px; background-color:white; " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Annulla"><i class="bi bi-x-circle-fill" style="color: rgb(255, 5, 5); font-size: 1.5rem;"></i></button>';
+
+                            disabilita();
+                          }
+                          
+
+                          
+                        </script>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+          
+        {% endif %}
+
+        
+      {% endfor %}
+
+      
+
+      <!-- 
+      <div class="row mb-3">
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-success float-end">Invia consuntivo</button>  
+        </div>
+      </div> 
+      -->
+    </form>
+
+  </main><!-- End #main -->
+
+  
+
+
+  <!-- Vendor JS Files -->
+  
+  <script src="{{url_for('static', filename='vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/echarts/echarts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/quill/quill.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+
+</html>

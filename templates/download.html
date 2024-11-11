@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>JWL Merger</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  
+  <!-- Favicons -->
+  <link href="{{url_for('static', filename='img/favicon.png')}}" rel="icon">
+  
+  <link href="{{url_for('static', filename='img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  
+  <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  
+  <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.snow.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/simple-datatables/style.css')}}" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Template Main CSS File -->
+  <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 20 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body style="background-color: #2A2926;">
+  
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center" style="background-color: rgb(62, 62, 62);">
+
+    <div class="text-center">
+      <a href="{{url_for('index')}}" class="text-center">
+        <h2 style="font-weight: bold; color: white" class="text-center">JW Library Merger</h2>
+      </a>
+    </div><!-- End Logo -->
+  </header><!-- End Header -->
+
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center w-100" style="width: 50rem;">
+    <form method="post" enctype="multipart/form-data">
+        <div class="card pb-4 px-3" style="background-color: rgb(62, 62, 62);">
+          <div class="card-body profile-card pt-4 text-center">
+            <h1 style="font-weight: bold; color:white">JW Library Backup Merger</h1>
+            <span style="color:rgb(255, 252, 219); font-weight: bold; font-size:1.3rem">Il caricamento è andato a buon fine, puoi scaricare il file :)</span>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <span class="text-center" style="color: rgb(255, 77, 0); font-weight: bold; font-size:1.3rem"><i class="ri ri-alert-fill" style="font-weight: 100; font-size:1.8rem"></i> {{ message }}</span>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <hr style="color: grey; border: 1.5px solid grey">
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" id="bottoneScarica" name="bottone" value="Scarica" style="font-size: 1.5rem;"><i class="ri ri-download-2-fill"></i> Scarica backup</button>
+                </div>
+                <div class="col text-center">
+                    <button onclick="window.location.href = '{{ url_for('index') }}'" name="bottone" value="Home" style="font-size: 1.5rem;" id="bottoneHome">Torna alla home</button>
+                </div>
+            </div>
+
+          </div>
+        </div>
+    </form>
+  </div>
+  <script>
+    function getFileData(myFile, n){
+        var file = myFile.files[0];  
+        var filename = file.name;
+
+        label = document.getElementById("nome_file"+n);
+        label.innerHTML = filename;
+     }
+
+     function caricamento() {
+      Swal.fire({
+          title: "Caricamento!",
+          text: "Aspetta che il territorio venga assegnato correttamente...",
+          imageUrl: "{{url_for('static', filename='img/infinity.gif')}}",
+          imageWidth: 300,
+          imageHeight: 300,
+          imageAlt: "Custom image",
+          showCancelButton: false, 
+          showConfirmButton: false
+        });
+      }
+  </script>
+
+  <main id="main" class="main">
+
+
+      
+
+  </main><!-- End #main -->
+
+  
+
+
+  <!-- Vendor JS Files -->
+  
+  <script src="{{url_for('static', filename='vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/echarts/echarts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/quill/quill.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+
+</html>
